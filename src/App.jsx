@@ -779,7 +779,7 @@ function Page({ title, subtitle, children }) {
 
 function Hero() {
   const { t } = useI18n();
-  const images = ["../src/img/Students1.jpg", "../src/img/Housing.jpg"];
+  const images = ["Students1.jpg", "/Housing.jpg"];
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   useEffect(() => { if (paused) return; const id = setInterval(() => setIndex((i) => (i + 1) % images.length), 3000); return () => clearInterval(id); }, [paused, images.length]);
@@ -978,7 +978,7 @@ function About() {
     <Page title="about.title" subtitle="about.subtitle">
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} className={`relative rounded-3xl overflow-hidden ${glossy}`} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.70) 100%)" }}>
-          <img src="../src/img/about.jpg" alt="International students on IIT campus" className="w-full h-[320px] md:h-[480px] object-cover" />
+          <img src="/About.jpg" alt="International students on IIT campus" className="w-full h-[320px] md:h-[480px] object-cover" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/10" />
         </motion.div>
 
