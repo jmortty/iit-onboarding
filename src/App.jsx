@@ -1,8 +1,11 @@
 import React, { useEffect, useMemo, useState, useContext, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { LogIn, LogOut, Menu, X, GraduationCap, Home as HomeIcon, Info, Mail, LayoutDashboard } from "lucide-react";
-import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
+import {
+  LogIn, LogOut, Menu, X, GraduationCap,
+  Home as HomeIcon, Info, Mail, LayoutDashboard,
+  Facebook, Instagram, Linkedin, Twitter, Youtube
+} from "lucide-react";
 
 /**
  * Illinois Institute of Technology brand palette (approximate)
@@ -25,30 +28,89 @@ const glossy = "bg-white/70 dark:bg-white/10 backdrop-blur-xl border border-whit
 =========================== */
 const messages = {
   en: {
-    brand: { app: "IIT Onboarding", sub: "International Students" },
-    nav: { home: "Home", about: "About", contact: "Contact", dashboard: "Dashboard", login: "Login", logout: "Logout" },
+    brand: { app: "ILLINOIS TECH ONBOARDING", sub: "International Students" },
+    nav: {
+      home: "Home", about: "About", contact: "Contact",
+      dashboard: "Dashboard", login: "Login", logout: "Logout"
+    },
     hero: {
-      badge: "Welcome to IIT",
+      badge: "Welcome to ILLINOIS TECH",
       title: "International Students Onboarding Platform",
-      body:
-        "Your guided path from admission to arrival: tasks, checklists, compliance, housing, and campus life.",
+      body: "Your guided path from admission to arrival: tasks, checklists, compliance, housing, and campus life.",
       ctaDash: "Go to Dashboard",
       ctaLearn: "Learn more",
     },
     home: {
-      whyTitle: "Why this platform?",
-      whySubtitle: "Designed with international students for a smooth start at Illinois Tech.",
-      points: [
-        "Centralized tasks with deadlines and reminders.",
-        "Secure document uploads for I-20, insurance, and compliance.",
-        "Local living tips—banking, transit, groceries, campus jobs.",
-        "Connect with mentors, advisors, and student communities.",
+      welcomeTitle: "Welcome to the International Student Onboarding Platform",
+      welcomeSubtitle:
+        "Designed with international students, for international students. Here, you’ll find everything you need to transition smoothly into life at Illinois Institute of Technology (IIT) — from your I-20 submission to your first class and community event.",
+      bannerNote:
+        "Background banner: smiling international students at IIT’s Mies Campus. Below is a dynamic onboarding preview:",
+      ctas: {
+        getStarted: "🔹 Get Started",
+        getStartedAria: "Get Started – Begin your onboarding journey",
+        progress: "🔹 Check Your Progress",
+        progressAria: "Check Your Progress – View your onboarding checklist",
+        explore: "🔹 Explore IIT Resources",
+        exploreAria: "Explore IIT Resources – Visit key student services",
+      },
+      progressTitle: "Onboarding Progress",
+      progressComplete: "75% Complete",
+      progressFootnote: "Housing Contract Submitted • I-20 Uploaded • Orientation Scheduled",
+      stepsTitle: "Your Onboarding Steps",
+      stepsLine:
+        "Step 1: Log in • Step 2: View dashboard • Step 3: Complete visa/housing/health tasks • Step 4: Attend orientation • Step 5: Arrive with confidence",
+      whyTitle: "💡 Why This Platform?",
+      whyTagline: "“Designed with international students — for a smooth start at Illinois Tech.”",
+      whyIntro1:
+        "The onboarding experience for international students can be overwhelming. Between visa paperwork, housing decisions, and settling into a new culture, many students struggle to track deadlines or access essential resources.",
+      whyIntro2:
+        "This platform simplifies your journey — combining all key onboarding steps, resources, and contacts into one secure digital home.",
+      cards: {
+        tasksTitle: "🧭 1. Centralized Tasks with Smart Reminders",
+        tasksList: [
+          "Manage your entire onboarding process through a single dashboard.",
+          "Personalized checklist that adapts to your stage (Pre-Arrival, Arrival, Post-Arrival).",
+          "Automatic email and in-app deadline notifications (I-20, orientation, housing).",
+          "Visual progress tracking (e.g., 75% Complete — Housing Contract Submitted).",
+        ],
+        tasksQuote: "“No more scattered emails — all your tasks, tracked and synced.”",
+        docsTitle: "🔒 2. Secure Document Uploads",
+        docsList: [
+          "Upload I-20, visa copies, insurance, and immunization records with encryption.",
+          "Automatic verification reminders for incomplete submissions.",
+          "Secure storage accessible only by authorized IIT staff.",
+        ],
+        docsQuote: "“Your paperwork, protected and organized — ready for your arrival.”",
+        lifeTitle: "🏙 3. Local Living Tips",
+        lifeList: [
+          "Banking: How to open U.S. accounts & set up digital payments.",
+          "Transit: CTA passes, IIT shuttles, Metra and “L” stations.",
+          "Groceries: Student-friendly stores & halal/specialty options near Mies Campus.",
+          "Campus Jobs: Student employment, HR onboarding, career fairs.",
+        ],
+        lifeQuote: "“Practical guidance for living confidently — both on and off campus.”",
+        connectTitle: "🤝 4. Connect with Mentors, Advisors, and Communities",
+        connectList: [
+          "Match with IIT peer mentors and cultural ambassadors.",
+          "Schedule meetings with academic advisors and orientation leaders.",
+          "Join international student groups and upcoming IIT social events.",
+        ],
+        connectQuote: "“From your first hello to lifelong connections — start your IIT journey with the right people.”",
+      },
+      howTitle: "🧩 How It Works",
+      howSubtitle: "Simple. Secure. Student-centered.",
+      howSteps: [
+        ["Step 1", "Log in with your IIT credentials (Single Sign-On)."],
+        ["Step 2", "View your personalized onboarding dashboard."],
+        ["Step 3", "Complete tasks: visa upload, housing application, health check."],
+        ["Step 4", "Attend virtual orientation or live sessions."],
+        ["Step 5", "Arrive at IIT with confidence — paperwork done, support waiting."],
       ],
     },
     about: {
       title: "About",
-      subtitle:
-        "Our mission is to streamline the onboarding journey for international students at IIT.",
+      subtitle: "Our mission is to streamline the onboarding journey for international students at IIT.",
       body:
         "The International Students Onboarding Platform provides a guided experience from admission to arrival. It helps students complete immigration steps, understand housing options, prepare for orientation, and access essential campus resources — all in one place.",
       cards: {
@@ -165,60 +227,104 @@ const messages = {
       university: "Illinois Institute of Technology",
     },
     ui: { language: "Language" },
+    notFound: { title: "Not Found", body: "Page not found." },
   },
   fr: {
     brand: { app: "Intégration IIT", sub: "Étudiants internationaux" },
-    nav: { home: "Accueil", about: "À propos", contact: "Contact", dashboard: "Tableau de bord", login: "Connexion", logout: "Déconnexion" },
+    nav: {
+      home: "Accueil", about: "À propos", contact: "Contact",
+      dashboard: "Tableau de bord", login: "Connexion", logout: "Déconnexion"
+    },
     hero: {
       badge: "Bienvenue à IIT",
       title: "Plateforme d’intégration des étudiants internationaux",
-      body:
-        "Votre parcours guidé de l’admission à l’arrivée : tâches, listes, conformité, logement et vie sur le campus.",
+      body: "Votre parcours guidé de l’admission à l’arrivée : tâches, listes, conformité, logement et vie sur le campus.",
       ctaDash: "Aller au tableau de bord",
       ctaLearn: "En savoir plus",
     },
     home: {
-      whyTitle: "Pourquoi cette plateforme ?",
-      whySubtitle: "Conçue avec les étudiants internationaux pour un démarrage fluide à Illinois Tech.",
-      points: [
-        "Tâches centralisées avec échéances et rappels.",
-        "Téléversement sécurisé des documents (I-20, assurance, conformité).",
-        "Conseils de vie locale—banque, transport, courses, emplois sur le campus.",
-        "Connexion avec des mentors, conseillers et communautés étudiantes.",
+      welcomeTitle: "Bienvenue sur la plateforme d’intégration des étudiants internationaux",
+      welcomeSubtitle:
+        "Conçue avec les étudiants internationaux, pour les étudiants internationaux. Ici, vous trouverez tout pour réussir votre arrivée à l’Illinois Institute of Technology (IIT) — de votre I-20 à votre premier cours et vos événements communautaires.",
+      bannerNote:
+        "Bannière : étudiants internationaux souriants sur le campus Mies d’IIT. Ci-dessous, un aperçu dynamique de l’intégration :",
+      ctas: {
+        getStarted: "🔹 Commencer",
+        getStartedAria: "Commencer — Démarrer votre parcours d’intégration",
+        progress: "🔹 Voir votre progression",
+        progressAria: "Voir votre progression — Consulter votre liste d’intégration",
+        explore: "🔹 Explorer les ressources IIT",
+        exploreAria: "Explorer — Accéder aux principaux services étudiants",
+      },
+      progressTitle: "Progression d’intégration",
+      progressComplete: "75 % terminé",
+      progressFootnote: "Contrat de logement soumis • I-20 téléversé • Orientation programmée",
+      stepsTitle: "Vos étapes d’intégration",
+      stepsLine:
+        "Étape 1 : Connexion • Étape 2 : Tableau de bord • Étape 3 : Visa/logement/santé • Étape 4 : Orientation • Étape 5 : Arrivée sereine",
+      whyTitle: "💡 Pourquoi cette plateforme ?",
+      whyTagline: "« Conçue avec les étudiants internationaux — pour un démarrage fluide à Illinois Tech. »",
+      whyIntro1:
+        "L’intégration peut être déroutante : visa, logement, culture… Il est difficile de suivre les échéances et d’accéder aux ressources essentielles.",
+      whyIntro2:
+        "Cette plateforme simplifie votre parcours — tâches, ressources et contacts réunis dans un espace numérique sécurisé.",
+      cards: {
+        tasksTitle: "🧭 1. Tâches centralisées avec rappels intelligents",
+        tasksList: [
+          "Gérez toute votre intégration depuis un tableau de bord unique.",
+          "Liste personnalisée selon votre étape (pré-arrivée, arrivée, post-arrivée).",
+          "Notifications email et in-app (I-20, orientation, logement).",
+          "Suivi visuel de progression (ex. 75 % — Contrat de logement soumis).",
+        ],
+        tasksQuote: "« Fini les emails éparpillés — toutes vos tâches, suivies et synchronisées. »",
+        docsTitle: "🔒 2. Téléversement sécurisé des documents",
+        docsList: [
+          "I-20, visa, assurance, vaccins avec chiffrement.",
+          "Rappels automatiques en cas de soumissions incomplètes.",
+          "Accès sécurisé réservé au personnel IIT autorisé.",
+        ],
+        docsQuote: "« Vos documents, protégés et organisés — prêts pour votre arrivée. »",
+        lifeTitle: "🏙 3. Conseils de vie locale",
+        lifeList: [
+          "Banque : ouvrir un compte US et paiements numériques.",
+          "Transport : CTA, navettes IIT, Metra et « L ».",
+          "Courses : magasins étudiants et options halal/spéciales près de Mies.",
+          "Emplois : jobs étudiants, onboarding RH, forums carrière.",
+        ],
+        lifeQuote: "« Des conseils pratiques pour vivre en confiance — sur et hors campus. »",
+        connectTitle: "🤝 4. Se connecter à des mentors, conseillers et communautés",
+        connectList: [
+          "Trouvez des mentors et ambassadeurs culturels IIT.",
+          "Planifiez des rendez-vous avec les conseillers et leaders d’orientation.",
+          "Rejoignez des groupes internationaux et les événements IIT.",
+        ],
+        connectQuote: "« Du premier bonjour à des liens durables — démarrez avec les bonnes personnes. »",
+      },
+      howTitle: "🧩 Comment ça marche",
+      howSubtitle: "Simple. Sécurisé. Centré sur l’étudiant.",
+      howSteps: [
+        ["Étape 1", "Connectez-vous avec vos identifiants IIT (SSO)."],
+        ["Étape 2", "Consultez votre tableau de bord personnalisé."],
+        ["Étape 3", "Effectuez les tâches : visa, logement, santé."],
+        ["Étape 4", "Participez à l’orientation (en ligne ou sur place)."],
+        ["Étape 5", "Arrivez à IIT sereinement — documents prêts, soutien en place."],
       ],
     },
     about: {
       title: "À propos",
-      subtitle:
-        "Notre mission est de simplifier le processus d’intégration des étudiants internationaux à IIT.",
+      subtitle: "Notre mission : fluidifier l’intégration des étudiants internationaux à IIT.",
       body:
-        "La plateforme propose un accompagnement de l’admission à l’arrivée : démarches d’immigration, logement, orientation et ressources essentielles — le tout au même endroit.",
+        "La plateforme offre un accompagnement de l’admission à l’arrivée : démarches d’immigration, logement, orientation et ressources essentielles — tout au même endroit.",
       cards: {
-        visa: {
-          title: "Conformité et Visa",
-          body:
-            "Guidage pas à pas pour le visa, l’inscription SEVIS et la soumission de documents, avec rappels adaptés aux exigences d’IIT.",
-        },
-        housing: {
-          title: "Logement et Arrivée",
-          body:
-            "Découvrir le logement sur campus, les appartements proches, les séjours temporaires et les contrôles d’arrivée.",
-        },
-        orient: {
-          title: "Orientation et Communauté",
-          body:
-            "Renseignez-vous sur la semaine d’orientation, les associations étudiantes et les clubs culturels. Créez des liens.",
-        },
-        resources: {
-          title: "Ressources du Campus",
-          body:
-            "Accéder à l’aide aux étudiants, au conseil académique, à la banque, à la santé, au bien-être et au tutorat.",
-        },
+        visa: { title: "Conformité et Visa", body: "Guidage pas à pas (visa, SEVIS, documents) avec rappels adaptés à IIT." },
+        housing: { title: "Logement et Arrivée", body: "Logement sur campus, appartements proches, séjours temporaires, contrôles d’arrivée." },
+        orient: { title: "Orientation et Communauté", body: "Semaine d’orientation, associations, clubs culturels, connexion aux mentors." },
+        resources: { title: "Ressources du Campus", body: "Aide étudiante, conseil académique, banque, téléphonie, santé, bien-être, tutorat." },
       },
     },
     contact: {
       title: "Contact",
-      subtitle: "Des questions ou des retours ? Écrivez-nous — nous sommes là pour vous.",
+      subtitle: "Des questions ou retours ? Écrivez-nous — nous sommes là pour vous.",
       name: "Nom",
       email: "Email",
       message: "Message",
@@ -258,8 +364,8 @@ const messages = {
         buildings: "Informations sur les bâtiments",
         loc: "Services basés sur la localisation",
         reg: "Inscription aux cours",
-        cal: "Intégration du calendrier académique",
-        adv: "Contacter un conseiller académique",
+        cal: "Intégration du calendrier",
+        adv: "Contacter un conseiller",
         comm: "Communautés étudiantes",
         mentor: "Mentorat",
         events: "Participation aux événements",
@@ -268,22 +374,22 @@ const messages = {
         emerg: "Contacts d’urgence",
       },
       dummy: {
-        visa: "Fournir les exigences de visa et un guidage pas à pas pour la soumission.",
-        housing: "Afficher logement sur/hors campus avec disponibilité, prix et services.",
+        visa: "Exigences de visa et guidage pas à pas pour la soumission.",
+        housing: "Logement sur/hors campus (disponibilité, prix, services).",
         culture: "Guides, vidéos et webinaires sur les coutumes locales.",
         documents: "Téléverser et stocker en toute sécurité les documents essentiels.",
-        maps: "Cartes des bâtiments, amphithéâtres, bibliothèques et installations.",
-        buildings: "Horaires, services et accessibilité de chaque bâtiment.",
+        maps: "Cartes des bâtiments, amphithéâtres, bibliothèques, installations.",
+        buildings: "Horaires, services et accessibilité par bâtiment.",
         loc: "Notifications d’événements ou services à proximité.",
         reg: "Instructions pour s’inscrire aux cours.",
         cal: "Synchroniser avec les échéances du semestre.",
         adv: "Contacter directement les conseillers académiques.",
         comm: "Se connecter aux pairs et groupes internationaux.",
-        mentor: "Associer nouveaux et étudiants expérimentés.",
+        mentor: "Associer nouveaux étudiants et mentors.",
         events: "Découvrir des événements, clubs et ateliers.",
         serv: "Restauration, santé, conseil, loisirs, etc.",
         amen: "Transports, supermarchés, banques et services essentiels.",
-        emerg: "Sécurité du campus, centres de santé et numéros d’urgence.",
+        emerg: "Sécurité du campus, centres de santé, numéros d’urgence.",
       },
       due: "Échéance",
       coming: "Section en construction. Bientôt disponible.",
@@ -302,45 +408,105 @@ const messages = {
       privacy: "Confidentialité",
       copyright: "Droits d’auteur",
       ibhe: "Système de plainte IBHE",
-      stuComplaint: "Informations sur les plaintes étudiantes",
+      stuComplaint: "Infos plaintes étudiantes",
       nondisc: "Politique de non-discrimination",
       rights: "Tous droits réservés",
       university: "Illinois Institute of Technology",
     },
     ui: { language: "Langue" },
+    notFound: { title: "Introuvable", body: "Page introuvable." },
   },
   es: {
     brand: { app: "Integración IIT", sub: "Estudiantes internacionales" },
-    nav: { home: "Inicio", about: "Acerca de", contact: "Contacto", dashboard: "Panel", login: "Ingresar", logout: "Salir" },
+    nav: {
+      home: "Inicio", about: "Acerca de", contact: "Contacto",
+      dashboard: "Panel", login: "Ingresar", logout: "Salir"
+    },
     hero: {
       badge: "Bienvenido a IIT",
       title: "Plataforma de Integración para Estudiantes Internacionales",
-      body:
-        "Tu ruta guiada desde la admisión hasta la llegada: tareas, listas, cumplimiento, vivienda y vida en el campus.",
+      body: "Tu ruta guiada desde la admisión hasta la llegada: tareas, listas, cumplimiento, vivienda y vida en el campus.",
       ctaDash: "Ir al Panel",
       ctaLearn: "Más información",
     },
     home: {
-      whyTitle: "¿Por qué esta plataforma?",
-      whySubtitle: "Diseñada con estudiantes internacionales para un inicio fluido en Illinois Tech.",
-      points: [
-        "Tareas centralizadas con fechas y recordatorios.",
-        "Carga segura de documentos (I-20, seguro y cumplimiento).",
-        "Consejos de vida local: bancos, transporte, compras, empleos.",
-        "Conecta con mentores, asesores y comunidades estudiantiles.",
+      welcomeTitle: "Bienvenido a la Plataforma de Integración de Estudiantes Internacionales",
+      welcomeSubtitle:
+        "Diseñada con estudiantes internacionales, para estudiantes internacionales. Aquí encontrarás todo para una transición fluida a la vida en IIT — desde tu I-20 hasta tu primera clase y evento comunitario.",
+      bannerNote:
+        "Banner: estudiantes internacionales sonriendo en el Campus Mies de IIT. Abajo verás una vista previa dinámica:",
+      ctas: {
+        getStarted: "🔹 Comenzar",
+        getStartedAria: "Comenzar — Inicia tu proceso de integración",
+        progress: "🔹 Ver tu progreso",
+        progressAria: "Ver tu progreso — Revisa tu lista de integración",
+        explore: "🔹 Explorar recursos de IIT",
+        exploreAria: "Explorar — Servicios estudiantiles clave",
+      },
+      progressTitle: "Progreso de integración",
+      progressComplete: "75% completado",
+      progressFootnote: "Contrato de vivienda enviado • I-20 cargado • Orientación programada",
+      stepsTitle: "Tus pasos de integración",
+      stepsLine:
+        "Paso 1: Iniciar sesión • Paso 2: Ver panel • Paso 3: Completar visa/vivienda/salud • Paso 4: Asistir a orientación • Paso 5: Llegar con confianza",
+      whyTitle: "💡 ¿Por qué esta plataforma?",
+      whyTagline: "“Diseñada con estudiantes internacionales — para un inicio fluido en Illinois Tech.”",
+      whyIntro1:
+        "La integración puede ser abrumadora: trámites de visa, vivienda y adaptación cultural. Muchos estudiantes tienen dificultades con fechas y recursos.",
+      whyIntro2:
+        "Esta plataforma simplifica tu camino — pasos, recursos y contactos en un único hogar digital seguro.",
+      cards: {
+        tasksTitle: "🧭 1. Tareas centralizadas con recordatorios",
+        tasksList: [
+          "Gestiona todo tu proceso desde un solo panel.",
+          "Lista personalizada según tu etapa (pre-llegada, llegada, post-llegada).",
+          "Notificaciones por email y en la app (I-20, orientación, vivienda).",
+          "Seguimiento visual del progreso (ej. 75% — Contrato de vivienda enviado).",
+        ],
+        tasksQuote: "“No más correos dispersos — todas tus tareas, controladas y sincronizadas.”",
+        docsTitle: "🔒 2. Carga segura de documentos",
+        docsList: [
+          "Sube I-20, visa, seguro y vacunas con cifrado.",
+          "Recordatorios automáticos si falta información.",
+          "Acceso seguro solo para personal autorizado de IIT.",
+        ],
+        docsQuote: "“Tu documentación, protegida y organizada — lista para tu llegada.”",
+        lifeTitle: "🏙 3. Consejos de vida local",
+        lifeList: [
+          "Banca: abre cuentas en EE. UU. y pagos digitales.",
+          "Transporte: CTA, shuttles IIT, Metra y líneas del ‘L’.",
+          "Compras: tiendas económicas y opciones halal/especiales cerca de Mies.",
+          "Empleos: trabajo estudiantil, onboarding de RR. HH., ferias de empleo.",
+        ],
+        lifeQuote: "“Guía práctica para vivir con confianza — dentro y fuera del campus.”",
+        connectTitle: "🤝 4. Conéctate con mentores, asesores y comunidades",
+        connectList: [
+          "Conecta con mentores y embajadores culturales de IIT.",
+          "Agenda reuniones con asesores y líderes de orientación.",
+          "Únete a grupos internacionales y próximos eventos.",
+        ],
+        connectQuote: "“Del primer saludo a conexiones duraderas — empieza con la gente adecuada.”",
+      },
+      howTitle: "🧩 Cómo funciona",
+      howSubtitle: "Simple. Seguro. Centrado en el estudiante.",
+      howSteps: [
+        ["Paso 1", "Inicia sesión con tus credenciales IIT (SSO)."],
+        ["Paso 2", "Consulta tu panel de integración personalizado."],
+        ["Paso 3", "Completa tareas: visa, vivienda, salud."],
+        ["Paso 4", "Asiste a orientación virtual o presencial."],
+        ["Paso 5", "Llega a IIT con confianza — trámites listos, apoyo esperando."],
       ],
     },
     about: {
       title: "Acerca de",
-      subtitle:
-        "Nuestra misión es simplificar la integración de estudiantes internacionales en IIT.",
+      subtitle: "Nuestra misión es simplificar la integración de estudiantes internacionales en IIT.",
       body:
         "La plataforma ofrece una experiencia guiada desde la admisión hasta la llegada: trámites migratorios, vivienda, orientación y recursos esenciales — todo en un solo lugar.",
       cards: {
-        visa: { title: "Cumplimiento y Visa", body: "Guía paso a paso para visa, SEVIS y envío de documentos, con recordatorios según IIT." },
-        housing: { title: "Vivienda y Llegada", body: "Explora vivienda en campus, apartamentos cercanos, estancias temporales y controles de llegada." },
-        orient: { title: "Orientación y Comunidad", body: "Conoce la semana de orientación, organizaciones estudiantiles y clubes culturales. Conéctate con mentores." },
-        resources: { title: "Recursos del Campus", body: "Soporte estudiantil, asesoría académica, banca, telefonía, salud, bienestar y tutoría." },
+        visa: { title: "Cumplimiento y Visa", body: "Guía paso a paso (visa, SEVIS, documentos) con recordatorios según IIT." },
+        housing: { title: "Vivienda y Llegada", body: "Vivienda en campus, apartamentos cercanos, estancias temporales y controles de llegada." },
+        orient: { title: "Orientación y Comunidad", body: "Semana de orientación, asociaciones estudiantiles, clubes culturales y mentores." },
+        resources: { title: "Recursos del Campus", body: "Apoyo estudiantil, asesoría académica, banca, telefonía, salud, bienestar y tutoría." },
       },
     },
     contact: {
@@ -384,7 +550,7 @@ const messages = {
         buildings: "Información de edificios",
         loc: "Servicios basados en ubicación",
         reg: "Guía de inscripción en cursos",
-        cal: "Integración del calendario académico",
+        cal: "Integración del calendario",
         adv: "Contacto con asesores",
         comm: "Comunidades estudiantiles",
         mentor: "Mentoría",
@@ -395,7 +561,7 @@ const messages = {
       },
       dummy: {
         visa: "Requisitos de visa y guía paso a paso para enviar documentos.",
-        housing: "Mostrar vivienda en/del campus con disponibilidad, precios y servicios.",
+        housing: "Vivienda en/del campus (disponibilidad, precios y servicios).",
         culture: "Guías, videos y seminarios sobre costumbres locales.",
         documents: "Sube y almacena de forma segura documentos esenciales.",
         maps: "Mapas de edificios, aulas, bibliotecas e instalaciones.",
@@ -434,6 +600,7 @@ const messages = {
       university: "Illinois Institute of Technology",
     },
     ui: { language: "Idioma" },
+    notFound: { title: "No encontrado", body: "Página no encontrada." },
   },
 };
 
@@ -664,25 +831,147 @@ function Hero() {
   );
 }
 
+/* ===========================
+   HOME (expanded, localized)
+=========================== */
 function Home() {
   const { t } = useI18n();
   return (
     <>
       <Hero />
-      <Page title="home.whyTitle" subtitle="home.whySubtitle">
-        <ul className="grid md:grid-cols-2 gap-4">
-          {t("home.points").map((item, i) => (
-            <li key={i} className="flex items-start gap-3">
-              <span className="mt-1 w-2.5 h-2.5 rounded-full flex-none" style={{ background: brand.red }} />
-              <span className="text-black/80">{item}</span>
+
+      <Page title={t("home.welcomeTitle")} subtitle={t("home.welcomeSubtitle")}>
+        {/* Primary CTAs */}
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            to="/login"
+            className="px-5 py-3 rounded-xl font-semibold text-white shadow hover:opacity-95"
+            style={{ background: brand.red }}
+            aria-label={t("home.ctas.getStartedAria")}
+          >
+            {t("home.ctas.getStarted")}
+          </Link>
+        <Link
+            to="/dashboard"
+            className="px-5 py-3 rounded-xl font-semibold border border-black/10 hover:bg-black/5"
+            aria-label={t("home.ctas.progressAria")}
+          >
+            {t("home.ctas.progress")}
+          </Link>
+          <Link
+            to="/about"
+            className="px-5 py-3 rounded-xl font-semibold border border-black/10 hover:bg-black/5"
+            aria-label={t("home.ctas.exploreAria")}
+          >
+            {t("home.ctas.explore")}
+          </Link>
+        </div>
+
+        <p className="mt-4 text-sm text-black/60">{t("home.bannerNote")}</p>
+
+        {/* Progress + Stepper */}
+        <div className="mt-5 grid lg:grid-cols-3 gap-6">
+          {/* Progress Card */}
+          <div className={`rounded-2xl p-5 ${glossy}`} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.78) 100%)" }}>
+            <div className="flex items-center justify-between">
+              <h4 className="font-bold text-black">{t("home.progressTitle")}</h4>
+              <span className="text-sm text-black/70">{t("home.progressComplete")}</span>
+            </div>
+            <div className="mt-3 h-3 w-full rounded-full bg-black/10 overflow-hidden">
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: brand.red }}
+                initial={{ width: "0%" }}
+                animate={{ width: "75%" }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              />
+            </div>
+            <p className="mt-2 text-xs text-black/60">{t("home.progressFootnote")}</p>
+          </div>
+
+          {/* Stepper */}
+          <div className={`rounded-2xl p-5 ${glossy} lg:col-span-2`} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.78) 100%)" }}>
+            <h4 className="font-bold text-black">{t("home.stepsTitle")}</h4>
+            <div className="mt-4 grid sm:grid-cols-5 gap-3">
+              {["1","2","3","4","5"].map((num, i) => (
+                <div key={i} className="flex flex-col items-center gap-2">
+                  <div className="w-10 h-10 rounded-full grid place-items-center text-white font-bold" style={{ background: i < 3 ? brand.red : "#d1d5db" }}>
+                    {num}
+                  </div>
+                  <span className="text-xs text-black/70 text-center">Step {num}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-3 text-sm text-black/70">{t("home.stepsLine")}</p>
+          </div>
+        </div>
+      </Page>
+
+      {/* Why This Platform */}
+      <Page title={t("home.whyTitle")} subtitle={t("home.whyTagline")}>
+        <p className="text-black/80">
+          {t("home.whyIntro1")}
+          <br /><br />
+          {t("home.whyIntro2")}
+        </p>
+
+        <div className="mt-6 grid md:grid-cols-2 gap-4">
+          {/* 1 */}
+          <div className={`rounded-2xl p-5 ${glossy}`} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.75) 100%)" }}>
+            <h4 className="font-bold text-black">{t("home.cards.tasksTitle")}</h4>
+            <ul className="mt-2 text-sm text-black/75 list-disc pl-5 space-y-1">
+              {t("home.cards.tasksList").map((line, i) => <li key={i}>{line}</li>)}
+            </ul>
+            <p className="mt-2 text-sm italic text-black/60">{t("home.cards.tasksQuote")}</p>
+          </div>
+          {/* 2 */}
+          <div className={`rounded-2xl p-5 ${glossy}`} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.75) 100%)" }}>
+            <h4 className="font-bold text-black">{t("home.cards.docsTitle")}</h4>
+            <ul className="mt-2 text-sm text-black/75 list-disc pl-5 space-y-1">
+              {t("home.cards.docsList").map((line, i) => <li key={i}>{line}</li>)}
+            </ul>
+            <p className="mt-2 text-sm italic text-black/60">{t("home.cards.docsQuote")}</p>
+          </div>
+          {/* 3 */}
+          <div className={`rounded-2xl p-5 ${glossy}`} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.75) 100%)" }}>
+            <h4 className="font-bold text-black">{t("home.cards.lifeTitle")}</h4>
+            <ul className="mt-2 text-sm text-black/75 list-disc pl-5 space-y-1">
+              {t("home.cards.lifeList").map((line, i) => <li key={i}>{line}</li>)}
+            </ul>
+            <p className="mt-2 text-sm italic text-black/60">{t("home.cards.lifeQuote")}</p>
+          </div>
+          {/* 4 */}
+          <div className={`rounded-2xl p-5 ${glossy}`} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.75) 100%)" }}>
+            <h4 className="font-bold text-black">{t("home.cards.connectTitle")}</h4>
+            <ul className="mt-2 text-sm text-black/75 list-disc pl-5 space-y-1">
+              {t("home.cards.connectList").map((line, i) => <li key={i}>{line}</li>)}
+            </ul>
+            <p className="mt-2 text-sm italic text-black/60">{t("home.cards.connectQuote")}</p>
+          </div>
+        </div>
+      </Page>
+
+      {/* How It Works */}
+      <Page title={t("home.howTitle")} subtitle={t("home.howSubtitle")}>
+        <ol className="grid md:grid-cols-5 gap-4 text-sm">
+          {t("home.howSteps").map(([title, body], i) => (
+            <li key={i} className={`rounded-2xl p-4 ${glossy}`} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.78) 100%)" }}>
+              <div className="flex items-center gap-2">
+                <span className="w-7 h-7 rounded-full grid place-items-center text-white text-xs font-bold" style={{ background: brand.red }}>{i + 1}</span>
+                <h5 className="font-semibold text-black">{title}</h5>
+              </div>
+              <p className="mt-2 text-black/70">{body}</p>
             </li>
           ))}
-        </ul>
+        </ol>
       </Page>
     </>
   );
 }
 
+/* ===========================
+   ABOUT (2 columns)
+=========================== */
 function About() {
   const { t } = useI18n();
   return (
@@ -715,19 +1004,16 @@ function About() {
   );
 }
 
+/* ===========================
+   CONTACT (2 columns)
+=========================== */
 function Contact() {
-  const { t } = useI18n?.() ?? { t: (s) => s }; // works even if i18n wasn't added
+  const { t } = useI18n?.() ?? { t: (s) => s };
   return (
     <Page title="contact.title" subtitle="contact.subtitle">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         {/* LEFT: Offices (≈40%) */}
-        <div
-          className="md:col-span-2 rounded-3xl p-6 text-white"
-          style={{
-            background:
-              "linear-gradient(135deg, #cc0000 0%, #990000 55%, #4a0000 100%)",
-          }}
-        >
+        <div className="md:col-span-2 rounded-3xl p-6 text-white" style={{ background: "linear-gradient(135deg, #cc0000 0%, #990000 55%, #4a0000 100%)" }}>
           <h3 className="text-xl font-extrabold mb-4">Key Offices</h3>
 
           {/* Registrar */}
@@ -836,7 +1122,9 @@ function Contact() {
   );
 }
 
-
+/* ===========================
+   LOGIN
+=========================== */
 function Login({ onLogin }) {
   const { t } = useI18n();
   const [email, setEmail] = useState("");
@@ -845,9 +1133,12 @@ function Login({ onLogin }) {
   const submit = (e) => { e.preventDefault(); onLogin({ email }); navigate("/dashboard"); };
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 py-10 relative" style={{ backgroundImage: "url('../src/img/Login.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
+    <section className="min-h-screen flex items-center justify-center px-4 py-10 relative"
+      style={{ backgroundImage: "url('../src/img/Login.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
       <div className="absolute inset-0 bg-black/30" />
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className={`relative z-10 max-w-md w-full rounded-3xl p-8 md:p-10 ${glossy}`} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.85) 100%)", boxShadow: "0 10px 40px rgba(0,0,0,0.4)" }}>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+        className={`relative z-10 max-w-md w-full rounded-3xl p-8 md:p-10 ${glossy}`}
+        style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.85) 100%)", boxShadow: "0 10px 40px rgba(0,0,0,0.4)" }}>
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 justify-center mb-3">
             <GraduationCap className="w-8 h-8 text-[#cc0000]" />
@@ -859,11 +1150,15 @@ function Login({ onLogin }) {
         <form onSubmit={submit} className="grid gap-5">
           <div>
             <label className="text-sm font-semibold text-black" htmlFor="lemail">{t("login.email")}</label>
-            <input id="lemail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-xl px-4 py-3 border border-black/10 focus:outline-none focus:ring-2" style={{ outlineColor: brand.red }} placeholder={t("login.placeholderEmail")} required />
+            <input id="lemail" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 w-full rounded-xl px-4 py-3 border border-black/10 focus:outline-none focus:ring-2"
+              style={{ outlineColor: brand.red }} placeholder={t("login.placeholderEmail")} required />
           </div>
           <div>
             <label className="text-sm font-semibold text-black" htmlFor="lpw">{t("login.password")}</label>
-            <input id="lpw" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 w-full rounded-xl px-4 py-3 border border-black/10 focus:outline-none focus:ring-2" style={{ outlineColor: brand.red }} placeholder={t("login.placeholderPw")} required />
+            <input id="lpw" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+              className="mt-1 w-full rounded-xl px-4 py-3 border border-black/10 focus:outline-none focus:ring-2"
+              style={{ outlineColor: brand.red }} placeholder={t("login.placeholderPw")} required />
           </div>
           <button type="submit" className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-white shadow hover:opacity-95 w-full" style={{ background: brand.red }}>
             <LogIn className="w-4 h-4" /> {t("login.submit")}
@@ -1062,9 +1357,7 @@ function Footer() {
           <div className="flex flex-col md:flex-row justify-between gap-8 border-b border-white/10 pb-8">
             <div className="max-w-sm">
               <div className="flex items-center gap-2 mb-3">
-                <h2>
-                  <strong>{t("footer.university")}</strong>
-                </h2>
+                <h2><strong>{t("footer.university")}</strong></h2>
               </div>
               <p className="text-sm text-white/90 leading-relaxed">
                 <strong>{t("footer.contactLabel")}</strong>
@@ -1081,35 +1374,33 @@ function Footer() {
             </div>
 
             {/* Social Media */}
-<div>
-  <h4 className="font-bold text-white mb-3">{t("footer.follow")}</h4>
-
-  {/* icon + label items */}
-  <ul className="space-y-2 text-sm">
-    {[
-      { name: "Facebook", href: "https://www.facebook.com/illinoistech", Icon: Facebook },
-      { name: "Instagram", href: "https://www.instagram.com/illinoistech/", Icon: Instagram },
-      { name: "LinkedIn", href: "https://www.linkedin.com/school/illinois-institute-of-technology/", Icon: Linkedin },
-      { name: "Twitter", href: "https://twitter.com/illinoistech", Icon: Twitter },
-      { name: "YouTube", href: "https://www.youtube.com/user/illinoistech", Icon: Youtube },
-    ].map(({ name, href, Icon }) => (
-      <li key={name}>
-        <a
-          href={href}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={name}
-          className="group inline-flex items-center gap-2 text-white/85 hover:text-white transition-colors"
-        >
-          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/10 ring-1 ring-white/15 group-hover:bg-white/15">
-            <Icon className="w-4 h-4" />
-          </span>
-          <span className="underline-offset-2 group-hover:underline">{name}</span>
-        </a>
-      </li>
-    ))}
-  </ul>
-</div>
+            <div>
+              <h4 className="font-bold text-white mb-3">{t("footer.follow")}</h4>
+              <ul className="space-y-2 text-sm">
+                {[
+                  { name: "Facebook", href: "https://www.facebook.com/illinoistech", Icon: Facebook },
+                  { name: "Instagram", href: "https://www.instagram.com/illinoistech/", Icon: Instagram },
+                  { name: "LinkedIn", href: "https://www.linkedin.com/school/illinois-institute-of-technology/", Icon: Linkedin },
+                  { name: "Twitter", href: "https://twitter.com/illinoistech", Icon: Twitter },
+                  { name: "YouTube", href: "https://www.youtube.com/user/illinoistech", Icon: Youtube },
+                ].map(({ name, href, Icon }) => (
+                  <li key={name}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={name}
+                      className="group inline-flex items-center gap-2 text-white/85 hover:text-white transition-colors"
+                    >
+                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/10 ring-1 ring-white/15 group-hover:bg-white/15">
+                        <Icon className="w-4 h-4" />
+                      </span>
+                      <span className="underline-offset-2 group-hover:underline">{name}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             <div>
               <h4 className="font-bold text-white mb-3">{t("footer.campusLinks")}</h4>
@@ -1165,7 +1456,14 @@ export default function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/dashboard/*" element={<DashboardLayout user={user} />} />
-            <Route path="*" element={<Page title="Not Found"><p className="text-black/70">Page not found.</p></Page>} />
+            <Route
+              path="*"
+              element={
+                <Page title="notFound.title">
+                  <p className="text-black/70">{messages.en.notFound.body /* fallback text key is used via t in title */}</p>
+                </Page>
+              }
+            />
           </Routes>
           <Footer />
         </Router>
